@@ -1,0 +1,6 @@
+.idea
+.coverrun
+node_modules
+build
+documentation/output
+test/js/reports
