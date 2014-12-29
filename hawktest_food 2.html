@@ -103,7 +103,7 @@
         }
 
         function getRandomArbitary (min, max) {
-        return Math.random() * (max - min) + min;
+            return Math.random() * (max - min) + min;
         }
 
         function beginLoop() {
@@ -148,14 +148,23 @@
             };
         }(document));
 
+        function getOffset( el ) {
+            var _x = 0;
+            var _y = 0;
+            while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+                _x += el.offsetLeft - el.scrollLeft;
+                _y += el.offsetTop - el.scrollTop;
+                el = el.offsetParent;
+            }
+            return { top: _y, left: _x };
+        }
+
         canvas.addEventListener('mousedown', function (event) {
             if (currentScreen.hasOwnProperty("createFoodAtMouse")) {
                 
-                var offset = $(this).offset();    
-                currentScreen.createFoodAtMouse(event.x - offset.left ,event.y - offset.top);
-                console.log(event);
-
-            }   
+                var offset = getOffset(this);
+                currentScreen.createFoodAtMouse(event.x - offset.left, event.y - offset.top);
+            }
         });
 
         // define the main screen for the game
