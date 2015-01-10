@@ -5,16 +5,16 @@ Genetix is a lightweight RTS inspired by natural selection and the process of ev
 
 The basic aim of the game is to outperform your opponent(s) by outlasting them or killing them, proving that your unique gene combinations are fit for survival.
 
-# Minions
-Minions are formed in gene pools and live to fulfil one destiny only: securing new genetic material for the next generation. They float around on their own accord, sniffing and collecting genes. Once all of a minion's five *gene slots* are filled, they transport them back to the gene pool,unload and repeat the process.
+## Minions
+Minions are formed in gene pools and live to fulfil one destiny only: securing new genetic material for the next generation. They float around on their own accord, sniffing and collecting genes. Once all of a minion's five *gene slots* are filled, they transport them back to the gene pool, unload and repeat the process.
 
-## Sight radius
+#### Sight radius
 Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s *basic instinct* is triggered. The sight radius is usually 5px times the size of the minion, but some genes can improve it.
 
-## Energy
+#### Energy
 A minion’s energy is determined by it’s stamina, and is used when executing behaviours. Energy is not replenishable, and once a minion runs out of energy, it will consume health instead when executing behaviours.
 
-## Health
+#### Health
 A minion's health is determined by it's size, i.e. Larger minions have more health than smaller minions.
 
 For example, a size 30 minion has 30 health (which means it can take 30 damage before dying).
@@ -23,12 +23,12 @@ When a minion's health drops below 20%, it starts to flicker and lose opacity. W
 
 Health regenerates slowly out of combat.
 
-## Strength
+#### Strength
 Strength determines how much damage can be dealt in combat and derives from a minion’s size. 
 
 For example, a size 30 minion has 30 strength, which means it deals 10-30 damage in combat. A size 50 minion will deal 10-50, and Size 10 minion will deal 10.
 
-## Persistence
+#### Persistence
 Persistence, which derives from a minion’s stamina, determines how long it will intimidate, pursue or flee from an enemy. 
 
 For example, a minion with 40 stamina will intimidate, pursue or flee for 3-4 seconds. A minion with 60 stamina will perform for 5-6 seconds.
