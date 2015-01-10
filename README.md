@@ -8,6 +8,9 @@ The basic aim of the game is to outperform your opponent(s) by outlasting them o
 ## Minions
 Minions are formed in gene pools and live to fulfil one destiny only: securing new genetic material for the next generation. They float around on their own accord, sniffing and collecting genes. Once all of a minion's five *gene slots* are filled, they transport them back to the gene pool, unload and repeat the process.
 
+![Minion collecting genes]
+(https://github.com/JimSangwine/genetix/blob/master/images/gif/1.minion.gif)
+
 #### Sight radius
 Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s *basic instinct* is triggered. The sight radius is usually 5px times the size of the minion, but some genes can improve it.
 
