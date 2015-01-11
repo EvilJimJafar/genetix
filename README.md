@@ -6,7 +6,7 @@ Genetix is a lightweight RTS inspired by natural selection and the process of ev
 The basic aim of the game is to outperform your opponent(s) by outlasting them or killing them, proving that your unique gene combinations are fit for survival.
 
 ## Minions
-Minions are formed in gene pools and live to fulfil one destiny only: securing new genetic material for the next generation. They float around on their own accord, sniffing and collecting genes. Once all of a minion's five *gene slots* are filled, they transport them back to the gene pool, unload and repeat the process.
+Minions are formed in gene pools and live to fulfil one destiny only: securing new genetic material for the next generation. They float around on their own accord, sniffing and collecting genes. Once all of a minion's five [gene slots](https://github.com/JimSangwine/genetix/blob/master/README.md#gene-slots) are filled, they transport them back to the gene pool, unload and repeat the process.
 
 ![Minion collecting genes]
 (https://github.com/JimSangwine/genetix/blob/master/images/gif/1.minion.gif)
