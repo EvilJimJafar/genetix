@@ -32,10 +32,13 @@ var paths = {
     in : {
         config: './source/js/GenetixConfig.js',
         js : [
-            './source/js/creature.js',
-            './source/js/dove.js',
-            './source/js/food.js',
-            './source/js/hawk.js'
+            './source/js/Genetix.js',
+            './source/js/Config.js',
+            './source/js/Core/*.js',
+            './source/js/Objects/*.js',
+            './source/js/Organisms/OrganismBase.js',
+            './source/js/Organisms/*.js',
+            './source/js/Utils/*.js'
         ],
         resources : './source/resources/**/*'
     },

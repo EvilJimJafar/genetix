@@ -9,11 +9,10 @@ Genetix.Organisms.Hawk = function(x, y) {
 
     Genetix.Organisms.OrganismBase.prototype.constructor.apply(this, arguments);
 
-    this.speed = Hawk.config.maxSpeed;
+    this.speed = this.maxSpeed = 1.5;
     this.turnSpeed = fullCircle / 100;
-    this.width = 10
+    this.width = 10;
     this.height = 6;
-    this.maxSpeed = 1.5;
     this.totalHealth = 20000;
 };
 
@@ -25,14 +24,15 @@ Genetix.Organisms.Hawk.prototype.constructor = Genetix.Organisms.Hawk;
  * @param {CanvasRenderingContext2D} ctx The Canvas Context
  * @override Genetix.Organisms.OrganismBase.prototype.draw
  */
-Genetix.Organisms.Hawk.prototype.draw = function(ctx) {
+Genetix.Organisms.Hawk.prototype.draw = function() {
     Genetix.Organisms.OrganismBase.prototype.draw.call(this, arguments);
 
+    var ctx = Genetix.Core.Renderer.getContext();
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(width, height*.5);
+    ctx.lineTo(width, height*0.5);
     ctx.lineTo(0, height);
-    ctx.lineTo(width*.1, height*.5);
+    ctx.lineTo(width*0.1, height*0.5);
     ctx.closePath();
     ctx.stroke();
 
@@ -54,7 +54,7 @@ Genetix.Organisms.Hawk.prototype.update = function(elapsed) {
         return;
     }
 
-    if (this.target != null && !this.target.wasEaten()) {
+    if (this.target !== null && !this.target.wasEaten()) {
         var y = this.target.position.y - this.position.y;
         var x = this.target.position.x - this.position.x;
         var d2 = Math.pow(x, 2) + Math.pow(y, 2);

@@ -61,6 +61,10 @@ Genetix.Core.Renderer = (function() {
             Genetix.Core.Engine.setGameDimensions(canvas.width, canvas.height);
         },
 
+        getContext: function() {
+            return _context;
+        },
+
         /**
          * Renders a frame to the game canvas
          */
@@ -74,40 +78,7 @@ Genetix.Core.Renderer = (function() {
             _context.fillStyle = '#ACE2F3';
             _context.fillRect(0, 0, _canvasWidth, _canvasHeight);
 
-            // draw the player
-            var player = Genetix.Core.Engine.Player();
-            _context.drawImage(player.getSprite(), player.x, player.y);
 
-            // draw the enemies
-            var enemies = Genetix.Core.Engine.Enemies();
-            var enemy;
-            for (i=enemies.length-1; i>=0; i--) {
-                enemy = enemies[i];
-                _context.drawImage(enemy.getSprite(), enemy.x, enemy.y);
-            }
-
-            // draw the player bullets
-            var bullets = Genetix.Core.Engine.PlayerBullets();
-            var bullet;
-            for (i=bullets.length-1; i>=0; i--) {
-                bullet = bullets[i];
-                _context.drawImage(bullet.getSprite(), bullet.x, bullet.y);
-            }
-
-            // draw the enemy bullets
-            bullets = Genetix.Core.Engine.EnemyBullets();
-            for (i=bullets.length-1; i>=0; i--) {
-                bullet = bullets[i];
-                _context.drawImage(bullet.getSprite(), bullet.x, bullet.y);
-            }
-
-            // draw the effects
-            var effects = Genetix.Core.Engine.Effects();
-            var effect;
-            for (i=effects.length-1; i>=0; i--) {
-                effect = effects[i];
-                _context.drawImage(effect.getSprite(), effect.x, effect.y);
-            }
         }
     };
 })();

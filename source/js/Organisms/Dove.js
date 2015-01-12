@@ -26,9 +26,10 @@ Genetix.Organisms.Dove.prototype.constructor = Genetix.Organisms.Dove;
  * @param {CanvasRenderingContext2D} ctx The Canvas Context
  * @override Genetix.Organisms.OrganismBase.prototype.draw
  */
-Genetix.Organisms.Dove.prototype.draw = function(ctx) {
+Genetix.Organisms.Dove.prototype.draw = function() {
     Genetix.Organisms.OrganismBase.prototype.draw.call(this, arguments);
 
+    var ctx = Genetix.Core.Renderer.getContext();
     ctx.beginPath();
     ctx.moveTo(-this.halfwidth, -this.halfheight);
     ctx.lineTo(this.halfwidth, -this.halfheight);
@@ -55,7 +56,7 @@ Genetix.Organisms.Dove.prototype.update = function(elapsed) {
         return;
     }
 
-    if (this.target != null && !this.target.wasEaten()) {
+    if (this.target !== null && !this.target.wasEaten()) {
         var y = this.target.position.y - this.position.y;
         var x = this.target.position.x - this.position.x;
         var d2 = Math.pow(x, 2) + Math.pow(y, 2);

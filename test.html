@@ -1,0 +1,447 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Hawk Test</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script type="text/javascript" src="build/js/Genetix.js"></script>
+
+<style type="text/css">
+
+    body {
+        background: rgba(25,25,25,1);
+    }
+
+    #wrapper {
+        position: relative;
+        width: 1100px; height: 700px;
+        margin: 5% auto;
+    }
+
+	canvas {
+        position:relative;
+	    background: rgba(25,25,25,1);
+        border: 2px solid rgba(255,255,255,.02);
+
+	}
+
+    #hawktotal {
+        display: block; position: absolute; top: -10px; left: 15px; z-index: 120;
+        background: rgba(25,25,25,1);
+        font-family: arial, sans-serif; font-size: 11px; font-weight: bold;
+        text-transform: uppercase;
+        padding: 5px 8px; border-radius: 2px; letter-spacing: 3px;
+        color: rgba(242,128,100,.3);
+    }
+
+    #elapsedclock {
+        position: absolute; bottom: 10px; left: 15px; z-index: 120;
+        font-family: georgia, serif; font-style: italic; font-size: 14px;
+        color: #333333;
+    }
+
+</style>
+<meta charset ="utf-8"/>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="elapsedclock">0</div>
+        <div id="hawktotal"> 0 Hawks </div>
+        <canvas id="board" />
+
+    </div>
+
+    <form id="startform">
+        <input type="text" id="foodnumber" value="2" placeholder="Initial food count"/>
+        <input type="text" id="hawknumber" value="2" placeholder="Initial hawk count"/>  
+        <input type="text" id="health" value="20" placeholder="Hawk health"/>  
+        <input type="text" id="foodvalue" value="3" placeholder="Food health value"/>  
+        <input type="text" id="foodgrowth" value="1" placeholder="Food growth speed"/>
+        <input type="text" id="foodsize" value="10" placeholder="Food size"/>  
+        <input type="text" id="maxspeed" value="1.5" placeholder="Hawk Speed"/>  
+    </form>
+    <button type="button" onclick="playGame()">Click Me!</button>
+
+    
+
+    <script>
+        var canvas;
+        var canvasWidth = 1100;
+        var canvasHeight = 700;
+        var numOfHawks = 2;
+        var numOfDoves = 0;
+        var numOfFood = 2;
+
+
+        canvas = document.querySelector('canvas#board');
+        canvas.setAttribute('width', canvasWidth);
+        canvas.setAttribute('height', canvasHeight);
+
+        function createCreature(baseClass) {
+            var angle = Math.random() * fullCircle;
+            var radius = Math.max(canvasWidth, canvasHeight) * 0.5;
+            var x = Math.cos(angle) * radius + canvasWidth * 0.5;
+            var y = Math.sin(angle) * radius + canvasHeight * 0.5;
+
+            Genetix.Core.Engine.addOrganism(new baseClass(x, y));
+        }
+
+        function createFood () {
+            Genetix.Core.Engine.addObject(new Genetix.Objects.Food(getRandomArbitary(50, canvasWidth - 50), getRandomArbitary(50, canvasHeight - 50)));
+        }
+
+        function createFoodAtMouse (x,y) {
+            Genetix.Core.Engine.addObject(new Genetix.Objects.Food(x,y));
+        }
+
+        function getRandomArbitary (min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function playGame () {
+            var form = document.getElementById("startform");
+
+            numOfFood = form.elements.foodnumber.value;
+            numOfHawks = form.elements.hawknumber.value;
+//            Hawk.config.totalHealth = form.elements.health.value * 1000;
+//            Food.config.foodValue = form.elements.foodvalue.value * 1000;
+            foodGrowthInterval = form.elements.foodgrowth.value * 1000;
+//            Food.config.foodSize = parseInt(form.elements.foodsize.value);
+//            Hawk.config.maxSpeed = form.elements.maxspeed.value;
+            Genetix.start(canvas);
+
+            for (var i = 0 ; i < numOfFood ; i++) {
+                createFood();
+            }
+
+            for (var i = 0; i < numOfHawks; i++) {
+                createCreature(Genetix.Organisms.Hawk);
+            }
+
+            for (var i = 0; i < numOfDoves; i++) {
+                createCreature(Genetix.Organisms.Dove);
+            }
+        }
+
+
+//        var surface;
+//        var currentScreen;
+//        var mainGameScreen;
+//        var mouse;
+//        var fullCircle = Math.PI * 2;
+//
+//        var numOfHawks = 2;
+//        var numOfDoves = 0;
+//        var numOfFood = 2;
+//        //var totalHealth = 20000;
+//        //var foodValue = 3000;
+//        var foodGrowthInterval = 1000;
+//        //var maxSpeed = 1.5;
+//        //var foodSize = 10;
+//
+//        function playGame () {
+//            var form = document.getElementById("startform");
+//
+//            numOfFood = form.elements.foodnumber.value;
+//            numOfHawks = form.elements.hawknumber.value;
+//            Hawk.config.totalHealth = form.elements.health.value * 1000;
+//            Food.config.foodValue = form.elements.foodvalue.value * 1000;
+//            foodGrowthInterval = form.elements.foodgrowth.value * 1000;
+//            Food.config.foodSize = parseInt(form.elements.foodsize.value);
+//            Hawk.config.maxSpeed = form.elements.maxspeed.value;
+//
+//            currentScreen = mainGameScreen;
+//            currentScreen.start();
+//        }
+//
+//        function getRandomArbitary (min, max) {
+//            return Math.random() * (max - min) + min;
+//        }
+//
+//        function beginLoop() {
+//            var frameId = 0;
+//            var lastFrame = Date.now();
+//
+//            function loop() {
+//                var thisFrame = Date.now();
+//
+//                var elapsed = thisFrame - lastFrame;
+//
+//                frameId = window.requestAnimationFrame(loop);
+//
+//                currentScreen.update(elapsed);
+//                currentScreen.draw(surface);
+//
+//                lastFrame = thisFrame;
+//            }
+//
+//            loop();
+//        }
+//
+//        canvas = document.querySelector('canvas#board');
+//        canvas.setAttribute('width', canvasWidth);
+//        canvas.setAttribute('height', canvasHeight);
+//        surface = canvas.getContext('2d');
+//
+//        mouse = (function (target) {
+//            var isButtonDown = false;
+//
+//            target.addEventListener('mousedown', function () {
+//                isButtonDown = true;
+//            });
+//            target.addEventListener('mouseup', function () {
+//                isButtonDown = false;
+//            });
+//
+//            return {
+//                isButtonDown: function () {
+//                    return isButtonDown;
+//                }
+//            };
+//        }(document));
+//
+//        function getOffset( el ) {
+//            var _x = 0;
+//            var _y = 0;
+//            while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+//                _x += el.offsetLeft - el.scrollLeft;
+//                _y += el.offsetTop - el.scrollTop;
+//                el = el.offsetParent;
+//            }
+//            return { top: _y, left: _x };
+//        }
+//
+//        canvas.addEventListener('mousedown', function (event) {
+//            if (currentScreen.hasOwnProperty("createFoodAtMouse")) {
+//
+//                var offset = getOffset(this);
+//                currentScreen.createFoodAtMouse(event.x - offset.left, event.y - offset.top);
+//            }
+//        });
+//
+//        // define the main screen for the game
+//        mainGameScreen = (function () {
+//
+//            var creatureEntities = [];
+//            var foodEntities = [];
+//
+//            function createCreature (baseClass) {
+//                var angle = Math.random() * fullCircle;
+//                var radius = Math.max(canvasWidth, canvasHeight) * 0.5;
+//                var x = Math.cos(angle) * radius + canvasWidth * 0.5;
+//                var y = Math.sin(angle) * radius + canvasHeight * 0.5;
+//
+//                creatureEntities.push(new baseClass(x, y, foodEntities));
+//            }
+//
+//            function createFood () {
+//                foodEntities.push(Food(getRandomArbitary(50, canvasWidth - 50), getRandomArbitary(50, canvasHeight - 50)));
+//            }
+//
+//            function createFoodAtMouse (x,y) {
+//                foodEntities.push(Food(x,y));
+//            }
+//
+//
+//            function start() {
+//
+//                for (var i = 0 ; i < numOfFood ; i++) {
+//                    createFood();
+//                }
+//
+//                for (var i = 0; i < numOfHawks; i++) {
+//                    createCreature(Hawk);
+//                }
+//
+//                for (var i = 0; i < numOfDoves; i++) {
+//                    createCreature(Dove);
+//                }
+//
+//            }
+//
+//
+//            function draw(ctx) {
+//                // ctx.fillStyle = "rgba(25,25,25,.1)";
+//                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+//
+//                var entityIndex = creatureEntities.length - 1;
+//                for (; entityIndex != -1; entityIndex--) {
+//                    creatureEntities[entityIndex].draw(ctx);
+//                }
+//
+//                for (var i = 0 ; i < foodEntities.length ; i++) {
+//                    foodEntities[i].draw(ctx);
+//                }
+//            }
+//
+//            var birthTimer = 0;
+//            var deathTimer = 0;
+//            // var generationTimer = 0;
+//            var foodTimer = 0;
+//            var growthTimer = 0;
+//            var elapsedTimer = 0;
+//
+//            function update(elapsed) {
+//
+//                //console.log (foodEntities.length);
+//
+//                for (var entityIndex = creatureEntities.length - 1 ; entityIndex != -1 ; entityIndex--) {
+//
+//                    var hawk = creatureEntities[entityIndex];
+//
+//                    // Check if the entity is dead
+//                    if (hawk.isDead()) {
+//                        creatureEntities.splice(entityIndex, 1);
+//                        continue;
+//                    }
+//
+//                    hawk.update(elapsed);
+//
+//                    // Check if target of the hawk is not null (if it's not null it has a target)
+//                    if (!hawk.hasTarget()) {
+//
+//                        // If there's still food to be eaten
+//                        if (foodEntities.filter( function (e) { return !e.wasEaten(); } ).length > 0) {
+//                            // If hawk doesnt have any target then we have to look for the closest target and assign it
+//                            var distances = [];
+//
+//                            // Go through all the food entities and see which one is the closest to the hawkl
+//                            for (var foodIndex = 0 ; foodIndex < foodEntities.length ; foodIndex++) {
+//
+//                                var food = foodEntities[foodIndex];
+//
+//                                if (!food.wasEaten()) {
+//                                    distances.push([ Math.pow(food.position.x - hawk.position.x, 2) + Math.pow(food.position.y - hawk.position.y, 2), foodIndex ]);
+//                                }
+//
+//                            }
+//
+//                            // this sorts distances in growing order
+//                            distances.sort(function (a, b) {
+//                                return a[0] - b[0];
+//                            });
+//
+//                            // assign the closest target (which is the first in the sorted array)
+//                            hawk.assignNewTarget(foodEntities[distances[1][1]]);
+//                        }
+//
+//                    }
+//                }
+//
+//
+//
+//                birthTimer += elapsed;
+//                deathTimer += elapsed;
+//
+//                var birthIntervalMax = 5000;
+//                var BirthIntervalMin = 500
+//                var birthInterval = Math.max((birthIntervalMax-(creatureEntities.length*100)), BirthIntervalMin);
+//
+//                if (birthTimer >= birthInterval ) {
+//
+//                    createCreature(Math.random() < 0.5 ? Dove : Hawk);
+//
+//                    birthTimer = 0;
+//                }
+//
+//                foodTimer += elapsed;
+//
+//
+//                for (var entityIndex = foodEntities.length - 1 ; entityIndex != -1 ; entityIndex--) {
+//
+//                    var food = foodEntities[entityIndex];
+//
+//                    if (food.wasEaten()) {
+//                        foodEntities.splice(entityIndex, 1);
+//                    }
+//
+//                }
+//
+//                growthTimer += elapsed;
+//
+//                if (growthTimer >= foodGrowthInterval ) {
+//
+//                    createFood();
+//
+//                    growthTimer = 0;
+//                }
+//
+//                elapsedTimer += elapsed;
+//                timeInSeconds = elapsedTimer/1000;
+//
+//                document.getElementById("hawktotal").innerHTML = creatureEntities.length + " Hawks";
+//                document.getElementById("elapsedclock").innerHTML = parseInt(timeInSeconds);
+//
+//            }
+//
+//            return {
+//                draw: draw,
+//                update: update,
+//                start: start,
+//                creatureEntities : creatureEntities,
+//                foodEntities : foodEntities,
+//                createFoodAtMouse : createFoodAtMouse
+//            };
+//        }());
+//
+//        // define the start screen
+//        currentScreen = (function (input) {
+//
+//            var hue = 0;
+//            var direction = 1;
+//            var transitioning = false;
+//            var wasButtonDown = false;
+//            var title = 'Hawks and Doves';
+//
+//            function centerText(ctx, text, y) {
+//                var measurement = ctx.measureText(text);
+//                var x = (ctx.canvas.width - measurement.width) / 2;
+//                ctx.fillText(text, x, y);
+//            }
+//
+//            function draw(ctx) {
+//
+//                var y = ctx.canvas.height / 2;
+//                var color = 'rgb(' + hue + ',0,0)';
+//
+//                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+//                ctx.fillStyle = 'rgba(255,255,255,1';
+//                ctx.font = '25px arial';
+//                centerText(ctx, title, y);
+//
+//                ctx.fillStyle = "rgba(150,150,150,.5)";
+//                ctx.font = '14px arial';
+//                centerText(ctx, 'An experiment of Evolutionary Strategies', y + 30);
+//            }
+//
+//            function update() {
+//
+//                // hue += 1 * direction;
+//                // if (hue > 255) direction = -1;
+//                // if (hue < 1) direction = 1;
+//
+//                // var isButtonDown = input.isButtonDown();
+//                // var mouseJustClicked = !isButtonDown && wasButtonDown;
+//
+//                // if (mouseJustClicked && !transitioning) {
+//                //     transitioning = true;
+//                //     currentScreen = mainGameScreen;
+//                //     currentScreen.start();
+//                // }
+//
+//                // wasButtonDown = isButtonDown;
+//            }
+//
+//            return {
+//                draw: draw,
+//                update: update,
+//            };
+//        }(mouse));
+//
+//        beginLoop();
+    </script>
+    <button onclick="playGame();">start</button>
+    <button onclick="Genetix.stop();">stop</button>
+
+</body>
+</html>

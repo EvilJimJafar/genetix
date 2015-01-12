@@ -102,7 +102,7 @@ Genetix.Core.Engine = (function() {
     var _updateObjects = function() {
         var object;
         for (var i = _objects.length -1; i >= 0; i--) {
-            object = _foodSources[i];
+            object = _objects[i];
 
             object.update();
         }
@@ -163,7 +163,7 @@ Genetix.Core.Engine = (function() {
         // clean up organisms
         for (i = _organisms.length -1; i>= 0; i--) {
             if (_organisms[i].dead) {
-                _organisms.splice()
+                _organisms.splice();
             }
         }
     };
@@ -176,7 +176,7 @@ Genetix.Core.Engine = (function() {
      * @private
      */
     var _updateLevel = function(frame) {
-        _level.update(frame);
+        // _level.update(frame);
     };
 
     /**

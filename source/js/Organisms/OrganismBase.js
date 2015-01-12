@@ -35,7 +35,8 @@ Genetix.Organisms.OrganismBase = function (x, y) {
  * This method should be overridden and called in the implementing class
  * @param {CanvasRenderingContext2D} ctx The Canvas Context
  */
-Genetix.Organisms.OrganismBase.prototype.draw = function (ctx) {
+Genetix.Organisms.OrganismBase.prototype.draw = function () {
+    var ctx = Genetix.Core.Renderer.getContext();
     ctx.save();
 
     ctx.translate(this.position.x, this.position.y);
@@ -70,6 +71,7 @@ Genetix.Organisms.OrganismBase.prototype.assignNewTarget = function (newTarget) 
  */
 Genetix.Organisms.OrganismBase.prototype.update = function (elapsed) {
     // @TODO: Implement some of the logic in here?
+    this.draw();
 };
 
 /**
@@ -82,4 +84,4 @@ Genetix.Organisms.OrganismBase.prototype.isDead = function () { return this.dead
  * Returns true if the organism has an uneaten target
  * @returns {boolean}
  */
-Genetix.Organisms.OrganismBase.prototype.hasTarget = function () { return !(this.target == null || this.target.wasEaten()); }
+Genetix.Organisms.OrganismBase.prototype.hasTarget = function () { return !(this.target === null || this.target.wasEaten()); };

@@ -23,7 +23,8 @@ Genetix.Objects.Food = function(x, y) {
         }
     };
 
-    var draw = function (ctx) {
+    var draw = function () {
+        var ctx = Genetix.Core.Renderer.getContext();
         ctx.save();
         ctx.globalAlpha = health;
         ctx.beginPath();
@@ -47,6 +48,7 @@ Genetix.Objects.Food = function(x, y) {
         draw : draw,
         nibble : nibble,
         wasEaten : function () { return eaten; },
-        wasNibbled : function () { return nibbled; }
+        wasNibbled : function () { return nibbled; },
+        update : function() { draw(); }
     };
 };
