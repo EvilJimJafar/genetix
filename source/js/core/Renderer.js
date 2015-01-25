@@ -68,15 +68,15 @@ Genetix.Core.Renderer = (function() {
         /**
          * Renders a frame to the game canvas
          */
-        Render: function() {
+        render: function() {
             var i;
 
             // clear the canvas
             _context.clearRect(0, 0, _canvasWidth, _canvasHeight);
 
             // background
-            _context.fillStyle = '#ACE2F3';
-            _context.fillRect(0, 0, _canvasWidth, _canvasHeight);
+            //_context.fillStyle = '#ACE2F3';
+            //_context.fillRect(0, 0, _canvasWidth, _canvasHeight);
 
 
         }

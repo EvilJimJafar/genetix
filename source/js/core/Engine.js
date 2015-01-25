@@ -206,7 +206,7 @@ Genetix.Core.Engine = (function() {
          * Updates the game state - called every frame
          * @param {Number} frame The current frame number
          */
-        Update: function(frame) {
+        update: function(frame) {
             _updateLevel(frame);
             _updateOrganisms();
             _updateObjects();
@@ -229,7 +229,7 @@ Genetix.Core.Engine = (function() {
          * @param {Genetix.levels.Level} [level] The level if setting
          * @returns {Genetix.levels.Level}
          */
-        Level: function(level) {
+        level: function(level) {
             if (level) {
                 _level = level;
             }
@@ -240,7 +240,7 @@ Genetix.Core.Engine = (function() {
          * Gets the collection of organisms
          * @returns {Array}
          */
-        Organisms: function() {
+        organisms: function() {
             return _organisms;
         },
 
@@ -256,7 +256,7 @@ Genetix.Core.Engine = (function() {
          * Gets the collection of on-screen objects
          * @returns {Array}
          */
-        Objects: function() {
+        objects: function() {
             return _objects;
         },
 
@@ -272,7 +272,7 @@ Genetix.Core.Engine = (function() {
          * Toggles pause state
          * @see Genetix.Core.Timer
          */
-        Pause: function() {
+        pause: function() {
             _paused = !_paused;
             if (_paused) {
                 _timePaused = new Date().getTime();

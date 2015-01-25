@@ -1,54 +1,49 @@
 Genetix.Objects.Food = function(x, y) {
-    var position = {
-        x : x,
+    this.position = {
+        x: x,
         y: y
     };
 
-    var foodSize = 10;
-    var foodValue = 3000;
-    var health = 1;
-    var healthDivider = health / foodSize;
+    this.foodSize = 10;
+    this.foodValue = 3000;
+    this.health = 1;
+    this.healthDivider = this.health / this.foodSize;
 
-    var nibbled = false;
-    var eaten = false;
+    this.wasNibbled = false;
+    this.wasEaten = false;
+};
 
-    var nibble = function () {
-        health -= healthDivider;
-        nibbled = true;
+Genetix.Objects.Food.prototype.nibble = function () {
+    this.health -= this.healthDivider;
+    this.wasNibbled = true;
 
-        // console.log (nibbled);
+    // console.log (nibbled);
 
-        if (health <= 0) {
-            eaten = true;
-        }
-    };
+    if (this.health <= 0) {
+        this.wasEaten = true;
+    }
+};
 
-    var draw = function () {
-        var ctx = Genetix.Core.Renderer.getContext();
-        ctx.save();
-        ctx.globalAlpha = health;
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(140,210,250,.8)';
+Genetix.Objects.Food.prototype.draw = function () {
+    var ctx = Genetix.Core.Renderer.getContext();
+    ctx.save();
+    ctx.globalAlpha = this.health;
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(140,210,250,.8)';
 
-        ctx.shadowColor = "rgba(140,210,250,1)";
-        ctx.shadowBlur = 10;
-        ctx.arc(position.x, position.y+2.5, Math.max(health*2, 1), 0, Math.PI * 2, true);
+    ctx.shadowColor = "rgba(140,210,250,1)";
+    ctx.shadowBlur = 10;
+    ctx.arc(this.position.x, this.position.y+2.5, Math.max(this.health*2, 1), 0, Math.PI * 2, true);
 
-        ctx.fill();
-        // ctx.strokeStyle = "rgba(130,210,0,1)";
-        // ctx.lineWidth = 1;
-        // ctx.stroke();
-        ctx.closePath();
+    ctx.fill();
+    // ctx.strokeStyle = "rgba(130,210,0,1)";
+    // ctx.lineWidth = 1;
+    // ctx.stroke();
+    ctx.closePath();
 
-        ctx.restore();
-    };
+    ctx.restore();
+};
 
-    return {
-        position : position,
-        draw : draw,
-        nibble : nibble,
-        wasEaten : function () { return eaten; },
-        wasNibbled : function () { return nibbled; },
-        update : function() { draw(); }
-    };
+Genetix.Objects.Food.prototype.update = function() {
+    this.draw();
 };

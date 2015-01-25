@@ -14,6 +14,7 @@ Genetix.Organisms.Hawk = function(x, y) {
     this.width = 10;
     this.height = 6;
     this.totalHealth = 20000;
+    this.color = [ 255, 255, 255, 1 ];
 };
 
 Genetix.Organisms.Hawk.prototype = Object.create(Genetix.Organisms.OrganismBase.prototype);
@@ -30,9 +31,9 @@ Genetix.Organisms.Hawk.prototype.draw = function() {
     var ctx = Genetix.Core.Renderer.getContext();
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(width, height*0.5);
-    ctx.lineTo(0, height);
-    ctx.lineTo(width*0.1, height*0.5);
+    ctx.lineTo(this.width, this.height*0.5);
+    ctx.lineTo(0, this.height);
+    ctx.lineTo(this.width*0.1, this.height*0.5);
     ctx.closePath();
     ctx.stroke();
 
@@ -44,7 +45,7 @@ Genetix.Organisms.Hawk.prototype.draw = function() {
  * @param {Number} elapsed
  */
 Genetix.Organisms.Hawk.prototype.update = function(elapsed) {
-    this.lifeTimer += elapsed;
+    //this.lifeTimer += elapsed;
     var timeToDie = this.maxSpeed/this.totalHealth;
 
     this.health = 1 - (this.lifeTimer * timeToDie);
@@ -54,14 +55,14 @@ Genetix.Organisms.Hawk.prototype.update = function(elapsed) {
         return;
     }
 
-    if (this.target !== null && !this.target.wasEaten()) {
+    if (this.target && !this.target.wasEaten) {
         var y = this.target.position.y - this.position.y;
         var x = this.target.position.x - this.position.x;
         var d2 = Math.pow(x, 2) + Math.pow(y, 2);
 
 
         if (d2 < 16) {
-            this.lifeTimer -= Food.config.foodValue;
+            this.lifeTimer -= this.target.foodValue;
             this.target.nibble();
             this.assignNewTarget();
 
@@ -87,10 +88,36 @@ Genetix.Organisms.Hawk.prototype.update = function(elapsed) {
 
     }
     else {
-        // Dove will do something else when there's no food to look for
+        var foodEntities = Genetix.Core.Engine.objects().slice(0);
+        // Find something to do
+        if (foodEntities.filter( function (e) { return !e.wasEaten; } ).length > 0) {
+            // If hawk doesnt have any target then we have to look for the closest target and assign it
+            var distances = [];
+
+            // Go through all the food entities and see which one is the closest to the hawkl
+            for (var foodIndex = 0 ; foodIndex < foodEntities.length ; foodIndex++) {
+
+                var food = foodEntities[foodIndex];
+
+                if (!food.wasEaten) {
+                    distances.push([ Math.pow(food.position.x - this.position.x, 2) + Math.pow(food.position.y - this.position.y, 2), foodIndex ]);
+                }
+
+            }
+
+            // this sorts distances in growing order
+            distances.sort(function (a, b) {
+                return a[0] - b[0];
+            });
+
+            // assign the closest target (which is the first in the sorted array)
+            this.assignNewTarget(foodEntities[distances[1][1]]);
+        }
     }
 
     if (this.health <= 0) {
         this.dead = true;
     }
+
+    this.draw();
 };

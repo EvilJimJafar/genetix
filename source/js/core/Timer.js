@@ -35,11 +35,11 @@ Genetix.Core.Timer = (function() {
         if (_run) {
             _frame++;
 
-            // update the engine
-            Genetix.Core.Engine.Update(_frame);
-
             // render the frame
-            Genetix.Core.Renderer.Render(_frame);
+            Genetix.Core.Renderer.render(_frame);
+
+            // update the engine
+            Genetix.Core.Engine.update(_frame);
         }
     };
 

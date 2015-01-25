@@ -52,13 +52,28 @@
     </div>
 
     <form id="startform">
-        <input type="text" id="foodnumber" value="2" placeholder="Initial food count"/>
-        <input type="text" id="hawknumber" value="2" placeholder="Initial hawk count"/>  
-        <input type="text" id="health" value="20" placeholder="Hawk health"/>  
-        <input type="text" id="foodvalue" value="3" placeholder="Food health value"/>  
-        <input type="text" id="foodgrowth" value="1" placeholder="Food growth speed"/>
-        <input type="text" id="foodsize" value="10" placeholder="Food size"/>  
-        <input type="text" id="maxspeed" value="1.5" placeholder="Hawk Speed"/>  
+        <t>
+            <th>
+            <td>food</td>
+            <td>hawks</td>
+            <td>doves</td>
+            <td>health</td>
+            <td>food value</td>
+            <td>food growth</td>
+            <td>food size</td>
+            <td>max speed</td>
+            </th>
+            <tr>
+            <td><input type="text" id="foodnumber" value="2" placeholder="Initial food count"/></td>
+            <td><input type="text" id="hawknumber" value="2" placeholder="Initial hawk count"/> </td>
+            <td><input type="text" id="dovenumber" value="2" placeholder="Initial dove count"/> </td>
+            <td><input type="text" id="health" value="20" placeholder="Hawk health"/>  </td>
+            <td><input type="text" id="foodvalue" value="3" placeholder="Food health value"/>  </td>
+            <td><input type="text" id="foodgrowth" value="1" placeholder="Food growth speed"/></td>
+            <td><input type="text" id="foodsize" value="10" placeholder="Food size"/>  </td>
+            <td><input type="text" id="maxspeed" value="1.5" placeholder="Hawk Speed"/>  </td>
+            </tr>
+        </t>
     </form>
     <button type="button" onclick="playGame()">Click Me!</button>
 
@@ -103,6 +118,7 @@
 
             numOfFood = form.elements.foodnumber.value;
             numOfHawks = form.elements.hawknumber.value;
+            numOfDoves = form.elements.dovenumber.value;
 //            Hawk.config.totalHealth = form.elements.health.value * 1000;
 //            Food.config.foodValue = form.elements.foodvalue.value * 1000;
             foodGrowthInterval = form.elements.foodgrowth.value * 1000;
