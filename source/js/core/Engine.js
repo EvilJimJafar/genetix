@@ -269,6 +269,13 @@ Genetix.Core.Engine = (function() {
         },
 
         /**
+         * Returns a collection containing all renderable entities (objects implementing draw())
+         */
+        renderableEntities: function() {
+            return _organisms.concat(_objects);
+        },
+
+        /**
          * Toggles pause state
          * @see Genetix.Core.Timer
          */

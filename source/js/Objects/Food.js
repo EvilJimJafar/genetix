@@ -45,5 +45,5 @@ Genetix.Objects.Food.prototype.draw = function () {
 };
 
 Genetix.Objects.Food.prototype.update = function() {
-    this.draw();
+    //
 };

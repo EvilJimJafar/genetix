@@ -121,6 +121,4 @@ Genetix.Organisms.Dove.prototype.update = function(elapsed) {
     if (this.health <= 0) {
         this.dead = true;
     }
-
-    this.draw();
 };

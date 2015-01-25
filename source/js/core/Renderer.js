@@ -78,7 +78,9 @@ Genetix.Core.Renderer = (function() {
             //_context.fillStyle = '#ACE2F3';
             //_context.fillRect(0, 0, _canvasWidth, _canvasHeight);
 
-
+            Genetix.Core.Engine.renderableEntities().forEach(function(entity) {
+                entity.draw();
+            });
         }
     };
 })();
