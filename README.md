@@ -9,14 +9,18 @@ The basic aim of the game is to outperform your opponent(s) by outlasting them o
 Minions are formed in gene pools and live to fulfil one destiny only: securing new genetic material for the next generation. They float around on their own accord, sniffing and collecting [genes](https://github.com/JimSangwine/genetix/blob/master/README.md#genes). Once all of a minion's five [gene slots](https://github.com/JimSangwine/genetix/blob/master/README.md#gene-slots) are filled, they transport them back to the gene pool, unload and repeat the process.
 
 ![Minion collecting genes]
-(https://github.com/JimSangwine/genetix/blob/master/images/gif/1.minion.gif)
+(https://github.com/JimSangwine/genetix/blob/master/images/gif/1.0_minion.gif)
 *Minions automatically target the nearest gene until all five gene slots have been filled*
 
 #### Sight radius
-Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s [basic instinct](https://github.com/JimSangwine/genetix/blob/develop/README.md#basic-instinct) is triggered. The sight radius is usually 5px times the size of the minion, but some genes can improve it.
+Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s [basic instinct](https://github.com/JimSangwine/genetix/blob/develop/README.md#basic-instinct) is triggered. All minions have a sight radius of X, though some genes can improve it.
+
+![A minion's sight radius]
+(https://github.com/JimSangwine/genetix/blob/master/images/gif/1.1_sight.gif)
+*The dotted lines around the minions denote their sight radius. The solid line denote their visibiliy radius. Note how the blue minion is small enough to escape the red minions sight radius.*
 
 #### Energy
-A minion’s energy is determined by it’s stamina, and is used when executing behaviours. Energy is not replenishable, and once a minion runs out of energy, it will consume health instead when executing behaviours.
+A minion’s energy is determined by it’s [stamina[(https://github.com/JimSangwine/genetix/blob/develop/README.md#stamina), and is used when executing behaviours. Energy is not replenishable, and once a minion runs out of energy, it will consume health instead when executing behaviours.
 
 #### Health
 A minion's health is determined by it's size, i.e. Larger minions have more health than smaller minions.
