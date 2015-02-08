@@ -10,6 +10,7 @@ Minions are formed in gene pools and live to fulfil one destiny only: securing n
 
 ![Minion collecting genes]
 (https://github.com/JimSangwine/genetix/blob/master/images/gif/1.minion.gif)
+*Minions automatically target the nearest gene until all five gene slots have been filled*
 
 #### Sight radius
 Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s [basic instinct](https://github.com/JimSangwine/genetix/blob/develop/README.md#basic-instinct) is triggered. The sight radius is usually 5px times the size of the minion, but some genes can improve it.
