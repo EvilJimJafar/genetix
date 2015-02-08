@@ -20,7 +20,7 @@ Every minion has a sight radius, outside which no other minion activity is regis
 *The dotted lines around the minions denote their sight radius. The solid line denote their visibiliy radius. Note how the blue minion is small enough to escape the red minions sight radius.*
 
 #### Energy
-A minion’s energy is determined by it’s [stamina[(https://github.com/JimSangwine/genetix/blob/develop/README.md#stamina), and is used when executing behaviours. Energy is not replenishable, and once a minion runs out of energy, it will consume health instead when executing behaviours.
+A minion’s energy is determined by it’s [stamina](https://github.com/JimSangwine/genetix/blob/develop/README.md#stamina), and is used when executing behaviours. Energy is not replenishable, and once a minion runs out of energy, it will consume health instead when executing behaviours.
 
 #### Health
 A minion's health is determined by it's size, i.e. Larger minions have more health than smaller minions.
