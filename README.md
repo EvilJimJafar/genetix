@@ -12,7 +12,7 @@ Minions are formed in gene pools and live to fulfil one destiny only: securing n
 (https://github.com/JimSangwine/genetix/blob/master/images/gif/1.minion.gif)
 
 #### Sight radius
-Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s *basic instinct* is triggered. The sight radius is usually 5px times the size of the minion, but some genes can improve it.
+Every minion has a sight radius, outside which no other minion activity is registered. As soon as another minion enters its sight radius, the minion’s [basic instinct](https://github.com/JimSangwine/genetix/blob/develop/README.md#basic-instinct) is triggered. The sight radius is usually 5px times the size of the minion, but some genes can improve it.
 
 #### Energy
 A minion’s energy is determined by it’s stamina, and is used when executing behaviours. Energy is not replenishable, and once a minion runs out of energy, it will consume health instead when executing behaviours.
