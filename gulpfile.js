@@ -23,6 +23,8 @@ var cover = require('gulp-coverage');
 var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
 var zip = require('gulp-zip');
+var connect = require('gulp-connect');
+var open = require('gulp-open');
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Setup paths and file lists
@@ -70,6 +72,10 @@ var paths = {
         resources : [
             './source/resources/**/*'
         ]
+    },
+    preview: {
+        path: './test.html',
+        url: 'http://localhost:8080/test.html'
     }
 };
 
@@ -78,24 +84,56 @@ var paths = {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // Default task
-gulp.task('default', ['test', 'js', 'resources', 'jsdoc']);
-
-// Grouped tasks
-gulp.task('js', function(callback) {
-    runSequence('jshint', 'concat_js', 'minify_js', 'copy_config', 'archive', callback);
+gulp.task('default', function(callback) {
+    runSequence('full', 'watch', 'preview', callback);
 });
+
+// Full build
+gulp.task('full', ['test', 'js', 'resources', 'jsdoc']);
+
+// JS build
+gulp.task('js', function(callback) {
+    runSequence('jshint', 'concat_js', 'minify_js', 'copy_config', 'archive', 'reload', callback);
+});
+
+// Unit testing
 gulp.task('test', function(callback) {
     runSequence('test_js', 'move_jasmine_reports', 'move_coverage_reports', callback);
 });
+
+// Archive
 gulp.task('archive', function(callback) {
     runSequence('archive_tar', 'archive_zip', callback);
+});
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Server tasks
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+gulp.task('connect', function() {
+    return connect.server({
+        root: './',
+        fallback: 'test.html',
+        livereload: true,
+        port: 8080
+    });
+});
+
+gulp.task('reload', function () {
+    return gulp.src(paths.preview.path)
+        .pipe(connect.reload());
+});
+
+gulp.task('preview', function() {
+    return gulp.src(paths.preview.path)
+        .pipe(open('', { url: paths.preview.url }));
 });
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Watch task
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-gulp.task('watch', function(cb) {
+gulp.task('watch', ['connect'], function(cb) {
     autowatch(gulp, paths.watch);
     return cb();
 });
