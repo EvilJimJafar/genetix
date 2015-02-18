@@ -23,6 +23,13 @@ Genetix.Core.Timer = (function() {
     var _frame = 0;
 
     /**
+     * The time the last frame was rendered
+     * @type {null}
+     * @private
+     */
+    var _lastFrameTime = null;
+
+    /**
      * The main game engine loop
      * @memberof Genetix.Core.Timer
      * @see Genetix.Core.Engine.Update
@@ -30,16 +37,19 @@ Genetix.Core.Timer = (function() {
      * @private
      */
     var _tick = function() {
-        requestAnimationFrame(_tick);
-
         if (_run) {
+            var now = Date.now();
+            var elapsed = (!_lastFrameTime) ? 0 : now - _lastFrameTime;
+            _lastFrameTime = now;
+
+            requestAnimationFrame(_tick);
             _frame++;
 
             // render the frame
             Genetix.Core.Renderer.render(_frame);
 
             // update the engine
-            Genetix.Core.Engine.update(_frame);
+            Genetix.Core.Engine.update(_frame, elapsed);
         }
     };
 
@@ -52,6 +62,9 @@ Genetix.Core.Timer = (function() {
          * @param {HTMLCanvasElement} canvas The canvas to render to
          */
         start: function(canvas) {
+            if(_run) {
+                return false;
+            }
             _run = true;
             Genetix.Core.Renderer.setCanvas(canvas);
             _tick();

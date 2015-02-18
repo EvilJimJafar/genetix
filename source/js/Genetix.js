@@ -11,6 +11,7 @@ var Genetix = (function() {
     "use strict";
 
     var _canvas = null;
+    var _running = false;
 
     return {
         /**
@@ -58,6 +59,10 @@ var Genetix = (function() {
          * @param canvas The canvas to render to
          */
         start: function (canvas) {
+            if (_running) {
+                return;
+            }
+            _running = true;
             Genetix.Core.Timer.start(canvas);
             document.onkeyup = Genetix.Core.Control.keyUp;
             document.onkeydown = Genetix.Core.Control.keyDown;
@@ -72,6 +77,7 @@ var Genetix = (function() {
             Genetix.Core.Timer.stop();
             document.onkeyup = null;
             document.onkeydown = null;
+            _running = false;
         },
 
         /**

@@ -80,15 +80,16 @@ Genetix.Core.Engine = (function() {
     /**
      * Updates all the on-screen organisms
      * @memberof Genetix.Core.Engine
+     * @param {Number} elapsed The time elapsed since the last frame
      * @see Genetix.vehicles.Vehicle.update
      * @private
      */
-    var _updateOrganisms = function() {
+    var _updateOrganisms = function(elapsed) {
         var organism;
         for (var i = _organisms.length -1; i >= 0; i--) {
             organism = _organisms[i];
 
-            organism.update();
+            organism.update(elapsed);
         }
         organism = null;
     };
@@ -127,14 +128,21 @@ Genetix.Core.Engine = (function() {
             organism = _organisms[i];
             for (ii = _objects.length -1; ii >= 0; ii--) {
                 object = _objects[ii];
-                if (Genetix.Utils.BoxUtil.Intersect(organism, object)) {
+                var y = organism.position.y - object.position.y;
+                var x = organism.position.x - object.position.x;
+                var d2 = Math.pow(x, 2) + Math.pow(y, 2);
+
+                if (d2 < 16) {
+                    console.log('organism ' + organism.type + ' hit object ' + object.type);
+                }
+                //if (Genetix.Utils.BoxUtil.Intersect(organism, object)) {
                     // do some stuff
                     //if (foodSource.depleted()) {
                     //    _foodSources.splice(i, 1);
                     //    center = Genetix.Utils.BoxUtil.Center(foodSource);
                     //    _effects.push(new Genetix.effects.ExplosionEffect(center.x, center.y));
                     //}
-                }
+                //}
             }
         }
 
@@ -143,7 +151,18 @@ Genetix.Core.Engine = (function() {
             organism1 = _organisms[i];
             for (ii = _organisms.length -1; i >= 0; i--) {
                 organism2 = _organisms[ii];
-                if (organism1 !== organism2 && Genetix.Utils.BoxUtil.Intersect(organism1, organism2)) {
+                if (organism1.guid === organism2.guid) {
+                    return;
+                }
+                var y = organism1.position.y - organism2.position.y;
+                var x = organism1.position.x - organism2.position.x;
+                var d2 = Math.pow(x, 2) + Math.pow(y, 2);
+
+                if (d2 < 16) {
+                    console.log('organism ' + organism1.type + ' hit organism ' + organism2.type);
+                }
+                //if (organism1 !== organism2 && Genetix.Utils.BoxUtil.Intersect(organism1, organism2)) {
+
                     // do some stuff
                     //center = Genetix.Utils.BoxUtil.Center(_player);
                     //_effects.push(new Genetix.effects.ExplosionEffect(center.x, center.y));
@@ -156,7 +175,7 @@ Genetix.Core.Engine = (function() {
                     //    _organisms.splice(i, 1);
                     //    break;
                     //}
-                }
+                //}
             }
         }
 
@@ -205,12 +224,13 @@ Genetix.Core.Engine = (function() {
         /**
          * Updates the game state - called every frame
          * @param {Number} frame The current frame number
+         * @param {Number} elapsed The time elapsed since the previous frame
          */
-        update: function(frame) {
+        update: function(frame, elapsed) {
             _updateLevel(frame);
-            _updateOrganisms();
+            _updateOrganisms(elapsed);
             _updateObjects();
-            _doCollisions();
+            //_doCollisions();
             _updateStats(frame);
         },
 

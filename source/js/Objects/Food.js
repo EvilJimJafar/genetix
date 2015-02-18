@@ -4,8 +4,10 @@ Genetix.Objects.Food = function(x, y) {
         y: y
     };
 
+    this.type = 'food';
+
     this.foodSize = 10;
-    this.foodValue = 3000;
+    this.foodValue = 5000;
     this.health = 1;
     this.healthDivider = this.health / this.foodSize;
 
