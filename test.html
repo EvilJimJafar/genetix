@@ -58,24 +58,12 @@
     <form id="startform">
         <table>
             <tr>
-                <th>food</th>
-                <th>hawks</th>
-                <th>doves</th>
-                <th>health</th>
-                <th>food value</th>
-                <th>food growth</th>
-                <th>food size</th>
-                <th>max speed</th>
+                <th>genes</th>
+                <th>minions</th>
             </tr>
             <tr>
-                <td><input type="text" id="foodnumber" value="2" placeholder="Initial food count"/></td>
-                <td><input type="text" id="hawknumber" value="2" placeholder="Initial hawk count"/> </td>
-                <td><input type="text" id="dovenumber" value="2" placeholder="Initial dove count"/> </td>
-                <td><input type="text" id="health" value="20" placeholder="Hawk health"/>  </td>
-                <td><input type="text" id="foodvalue" value="3" placeholder="Food health value"/>  </td>
-                <td><input type="text" id="foodgrowth" value="1" placeholder="Food growth speed"/></td>
-                <td><input type="text" id="foodsize" value="10" placeholder="Food size"/>  </td>
-                <td><input type="text" id="maxspeed" value="1.5" placeholder="Hawk Speed"/>  </td>
+                <td><input type="text" id="genenumber" value="20" placeholder="Initial gene count"/></td>
+                <td><input type="text" id="minionnumber" value="2" placeholder="Initial minion count"/></td>
             </tr>
         </table>
     </form>
@@ -87,9 +75,8 @@
         var canvas;
         var canvasWidth = 1100;
         var canvasHeight = 700;
-        var numOfHawks = 2;
-        var numOfDoves = 0;
-        var numOfFood = 2;
+        var numOfGenes = 20;
+        var numOfMinions = 2;
 
 
         canvas = document.querySelector('canvas#board');
@@ -105,12 +92,12 @@
             Genetix.Core.Engine.addOrganism(new baseClass(x, y));
         }
 
-        function createFood () {
-            Genetix.Core.Engine.addObject(new Genetix.Objects.Food(getRandomArbitary(50, canvasWidth - 50), getRandomArbitary(50, canvasHeight - 50)));
+        function createGene () {
+            Genetix.Core.Engine.addObject(new Genetix.Objects.Gene(getRandomArbitary(50, canvasWidth - 50), getRandomArbitary(50, canvasHeight - 50)));
         }
 
-        function createFoodAtMouse (x,y) {
-            Genetix.Core.Engine.addObject(new Genetix.Objects.Food(x,y));
+        function createGeneAtMouse (x,y) {
+            Genetix.Core.Engine.addObject(new Genetix.Objects.Gene(x,y));
         }
 
         function getRandomArbitary (min, max) {
@@ -120,26 +107,16 @@
         function playGame () {
             var form = document.getElementById("startform");
 
-            numOfFood = form.elements.foodnumber.value;
-            numOfHawks = form.elements.hawknumber.value;
-            numOfDoves = form.elements.dovenumber.value;
-//            Hawk.config.totalHealth = form.elements.health.value * 1000;
-//            Food.config.foodValue = form.elements.foodvalue.value * 1000;
-            foodGrowthInterval = form.elements.foodgrowth.value * 1000;
-//            Food.config.foodSize = parseInt(form.elements.foodsize.value);
-//            Hawk.config.maxSpeed = form.elements.maxspeed.value;
+            numOfGenes = parseInt(form.elements.genenumber.value);
+            numOfMinions = parseInt(form.elements.minionnumber.value);
             Genetix.start(canvas);
 
-            for (var i = 0 ; i < numOfFood ; i++) {
-                createFood();
+            for (var i = 0 ; i < numOfGenes ; i++) {
+                createGene();
             }
 
-            for (var i = 0; i < numOfHawks; i++) {
-                createCreature(Genetix.Organisms.Hawk);
-            }
-
-            for (var i = 0; i < numOfDoves; i++) {
-                createCreature(Genetix.Organisms.Dove);
+            for (var i = 0; i < numOfMinions; i++) {
+                createCreature(Genetix.Organisms.Minion);
             }
         }
     </script>

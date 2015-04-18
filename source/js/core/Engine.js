@@ -117,8 +117,7 @@ Genetix.Core.Engine = (function() {
      * @private
      */
     var _doCollisions = function() {
-        var i;
-        var ii;
+        var i,ii, x, y,d2;
         var organism, organism1, organism2;
         var object;
         var center;
@@ -128,9 +127,9 @@ Genetix.Core.Engine = (function() {
             organism = _organisms[i];
             for (ii = _objects.length -1; ii >= 0; ii--) {
                 object = _objects[ii];
-                var y = organism.position.y - object.position.y;
-                var x = organism.position.x - object.position.x;
-                var d2 = Math.pow(x, 2) + Math.pow(y, 2);
+                y = organism.position.y - object.position.y;
+                x = organism.position.x - object.position.x;
+                d2 = Math.pow(x, 2) + Math.pow(y, 2);
 
                 if (d2 < 16) {
                     console.log('organism ' + organism.type + ' hit object ' + object.type);
@@ -154,9 +153,9 @@ Genetix.Core.Engine = (function() {
                 if (organism1.guid === organism2.guid) {
                     return;
                 }
-                var y = organism1.position.y - organism2.position.y;
-                var x = organism1.position.x - organism2.position.x;
-                var d2 = Math.pow(x, 2) + Math.pow(y, 2);
+                y = organism1.position.y - organism2.position.y;
+                x = organism1.position.x - organism2.position.x;
+                d2 = Math.pow(x, 2) + Math.pow(y, 2);
 
                 if (d2 < 16) {
                     console.log('organism ' + organism1.type + ' hit organism ' + organism2.type);
