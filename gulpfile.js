@@ -36,6 +36,7 @@ var paths = {
         js : [
             './source/js/Genetix.js',
             './source/js/Config.js',
+            './source/js/Constants.js',
             './source/js/Core/*.js',
             './source/js/Objects/*.js',
             './source/js/Organisms/OrganismBase.js',

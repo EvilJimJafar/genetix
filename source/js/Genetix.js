@@ -39,6 +39,11 @@ var Genetix = (function() {
         Utils: {},
 
         /**
+         * The Constants namespace
+         */
+        Constants: {},
+
+        /**
          * Enables inheritance
          * @param {*} dest The derived class
          * @param {*} source The base class

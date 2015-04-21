@@ -65,69 +65,51 @@ Genetix.Organisms.Minion.prototype.update = function (elapsed) {
     //this.speed = Math.min (this.maxSpeed - (this.lifeTimer * timeToDie), this.maxSpeed);
     this.speed = this.maxSpeed;
 
-    if (this.target && !this.target.minion && !this.target.genePool) {
-        var y = this.target.position.y - this.position.y;
-        var x = this.target.position.x - this.position.x;
-        var d2 = Math.pow(x, 2) + Math.pow(y, 2);
-
-        if (d2 < 16) {
-            //this.lifeTimer -= this.target.foodValue;
-            this.target.grab(this);
-            this.genes.push(this.target);
-            this.assignNewTarget(null);
-        } else {
-            var angle = Math.atan2(y, x);
-            var delta = angle - this.orientation;
-            var delta_abs = Math.abs(delta);
-            var currentOrientation = this.orientation;
-
-            if (delta_abs > Math.PI) {
-                delta = delta_abs - fullCircle;
+    if (this.target) {
+        var proximity = Genetix.Utils.MathUtil.getProximity(this.target, this);
+        if (this.target.type === 'gene') {
+            if(this.target.minion || this.target.genePool) {
+                this.assignNewTarget(null);
+                return;
             }
-
-            if (delta !== 0) {
-                var direction = delta / delta_abs;
-                this.orientation += (direction * Math.min(this.turnSpeed, delta_abs));
+            if (proximity.d2 < 16) {
+                //this.lifeTimer -= this.target.foodValue;
+                this.target.grab(this);
+                this.genes.push(this.target);
+                this.assignNewTarget(null);
+            } else {
+                this.headTowardsTarget();
             }
-            this.orientation %= fullCircle;
-
-            this.position.x += Math.cos(this.orientation) * this.speed;
-            this.position.y += Math.sin(this.orientation) * this.speed;
-
-            var geneCount = this.genes.length;
-            for (var i=0; i<geneCount; i++) {
-                var offset = ((i+1)*10) + 5;
-                var lag = ((this.orientation - currentOrientation) * i);
-                this.genes[i].position.x = (this.position.x - (Math.cos(this.orientation-lag) * offset));
-                this.genes[i].position.y = (this.position.y - (Math.sin(this.orientation-lag) * offset));
+        } else if(this.target.type === 'genePool') {
+            if (proximity.d2 < 40) {
+                var pool = this.target;
+                this.genes.forEach(function(gene) {
+                    gene.drop(pool);
+                });
+                this.genes.length = 0;
+                this.assignNewTarget(null);
+            } else {
+                this.headTowardsTarget();
             }
         }
-
     } else if(this.genes.length < 5) {
-        console.log('looking for another gene');
-        var genes = Genetix.Core.Engine.objects().filter( function (g) { return g.type === 'gene' && !g.minion && !g.genePool; } ).slice(0);
-        // Find something to do
-        if (genes.length > 0) {
-            // If minion doesnt have any target then we have to look for the closest target and assign it
-            var distances = [];
+        // start looking for another gene
+        var genes = Genetix.Core.Engine.genes.filter( function (g) { return !g.minion && !g.genePool; } );
 
-            // Go through all the genes and see which one is the closest to the minion
-            for (var geneIndex = 0; geneIndex < genes.length; geneIndex++) {
-                var gene = genes[geneIndex];
-                distances.push([Math.pow(gene.position.x - this.position.x, 2) + Math.pow(gene.position.y - this.position.y, 2), geneIndex]);
-            }
-
-            // this sorts distances in growing order
-            distances.sort(function (a, b) {
-                return a[0] - b[0];
-            });
-
-            // assign the closest target (which is the first in the sorted array)
-            if (distances[1]) {
-                this.assignNewTarget(genes[distances[1][1]]);
-            }
+        // If minion doesnt have any target then we have to look for the closest target and assign it
+        var closestGene = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, genes);
+        if(closestGene) {
+            this.assignNewTarget(closestGene);
         } else {
-            // assign gene pool as target
+
+        }
+    } else {
+        // take the genes to a gene pool
+        var closestPool = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, Genetix.Core.Engine.genePools);
+        if(closestPool) {
+            this.assignNewTarget(closestPool);
+        } else {
+
         }
     }
 
@@ -137,4 +119,19 @@ Genetix.Organisms.Minion.prototype.update = function (elapsed) {
     }
 
     this.draw();
+};
+
+Genetix.Organisms.Minion.prototype.headTowardsTarget = function() {
+    var currentOrientation = this.orientation;
+
+    Genetix.Organisms.OrganismBase.prototype.headTowardsTarget.call(this, arguments);
+
+    // update positions of carried genes
+    var geneCount = this.genes.length;
+    for (var i=0; i<geneCount; i++) {
+        var offset = ((i+1)*10) + 5;
+        var lag = ((this.orientation - currentOrientation) * i);
+        this.genes[i].position.x = (this.position.x - (Math.cos(this.orientation-lag) * offset));
+        this.genes[i].position.y = (this.position.y - (Math.sin(this.orientation-lag) * offset));
+    }
 };

@@ -96,11 +96,15 @@
             Genetix.Core.Engine.addObject(new Genetix.Objects.Gene(getRandomArbitary(50, canvasWidth - 50), getRandomArbitary(50, canvasHeight - 50)));
         }
 
-        function createGeneAtMouse (x,y) {
+        function createGeneAtMouse(x,y) {
             Genetix.Core.Engine.addObject(new Genetix.Objects.Gene(x,y));
         }
 
-        function getRandomArbitary (min, max) {
+        function createGenePool() {
+            Genetix.Core.Engine.addObject(new Genetix.Objects.GenePool(150, 150));
+        }
+
+        function getRandomArbitary(min, max) {
             return Math.random() * (max - min) + min;
         }
 
@@ -118,6 +122,8 @@
             for (var i = 0; i < numOfMinions; i++) {
                 createCreature(Genetix.Organisms.Minion);
             }
+
+            createGenePool();
         }
     </script>
 

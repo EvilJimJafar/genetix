@@ -157,6 +157,26 @@ Genetix.Organisms.OrganismBase.prototype.update = function (elapsed) {
     this.draw();
 };
 
+Genetix.Organisms.OrganismBase.prototype.headTowardsTarget = function() {
+    var proximity = Genetix.Utils.MathUtil.getProximity(this.target, this);
+    var angle = Math.atan2(proximity.y, proximity.x);
+    var delta = angle - this.orientation;
+    var delta_abs = Math.abs(delta);
+
+    if (delta_abs > Math.PI) {
+        delta = delta_abs - fullCircle;
+    }
+
+    if (delta !== 0) {
+        var direction = delta / delta_abs;
+        this.orientation += (direction * Math.min(this.turnSpeed, delta_abs));
+    }
+    this.orientation %= fullCircle;
+
+    this.position.x += Math.cos(this.orientation) * this.speed;
+    this.position.y += Math.sin(this.orientation) * this.speed;
+};
+
 /**
  * Returns true if the organism is dead
  * @returns {boolean}

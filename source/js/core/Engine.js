@@ -46,6 +46,24 @@ Genetix.Core.Engine = (function() {
     var _objects = [];
 
     /**
+     * A collection of all the onscreen GenePools
+     * @memberof Genetix.Core.Engine
+     * @see Genetix.Objects.GenePool
+     * @type Array
+     * @private
+     */
+    var _genePools = [];
+
+    /**
+     * A collection of all the onscreen Genes
+     * @memberof Genetix.Core.Engine
+     * @see Genetix.Objects.Gene
+     * @type Array
+     * @private
+     */
+    var _genes = [];
+
+    /**
      * The last time the FPS was updated (happens approx once per second)
      * @memberof Genetix.Core.Engine
      * @type Date
@@ -279,12 +297,25 @@ Genetix.Core.Engine = (function() {
             return _objects;
         },
 
+        get genes() {
+            return _genes;
+        },
+
+        get genePools() {
+            return _genePools;
+        },
+
         /**
          * Adds a single organism to the game
          * @param {Genetix.Organisms.Organism} organism The organism to be added
          */
         addObject: function(object) {
             _objects.push(object);
+            if(object.type === 'gene') {
+                _genes.push(object);
+            } else if(object.type === 'genePool') {
+                _genePools.push(object);
+            }
         },
 
         /**

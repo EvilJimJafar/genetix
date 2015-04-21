@@ -19,7 +19,7 @@ Genetix.Objects.Gene = function(x, y) {
     this.genePool = null;
 };
 
-Genetix.Objects.Gene.prototype.grab = function (minion) {
+Genetix.Objects.Gene.prototype.grab = function(minion) {
     this.minion = minion;
 };
 
@@ -27,14 +27,22 @@ Genetix.Objects.Gene.prototype.grab = function (minion) {
  * Drops the gene either at a genepool or the current location
  * @param {Genetix.Objects.GenePool} genePool
  */
-Genetix.Objects.Gene.prototype.drop = function (genePool) {
+Genetix.Objects.Gene.prototype.drop = function(genePool) {
     this.minion = null;
     if(genePool) {
+        console.log('I am being dropped off at a genepool');
         this.genePool = genePool;
+        genePool.addGene(this);
+    } else {
+        this.genePool = null;
     }
 };
 
-Genetix.Objects.Gene.prototype.draw = function () {
+Genetix.Objects.Gene.prototype.draw = function() {
+    if(this.genePool) {
+        console.log('I am at a genePool - not drawing');
+        return;
+    }
     var ctx = Genetix.Core.Renderer.getContext();
     ctx.save();
     ctx.globalAlpha = 1;
