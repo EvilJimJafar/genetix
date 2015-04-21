@@ -100,8 +100,14 @@ Genetix.Organisms.Minion.prototype.update = function (elapsed) {
         var closestGene = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, genes);
         if(closestGene) {
             this.assignNewTarget(closestGene);
-        } else {
+        } else if(this.genes.length > 0) {
+            // take the genes to a gene pool
+            var closestPool = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, Genetix.Core.Engine.genePools);
+            if(closestPool) {
+                this.assignNewTarget(closestPool);
+            } else {
 
+            }
         }
     } else {
         // take the genes to a gene pool

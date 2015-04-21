@@ -77,6 +77,7 @@
         var canvasHeight = 700;
         var numOfGenes = 20;
         var numOfMinions = 2;
+        var hasBeenStarted = false;
 
 
         canvas = document.querySelector('canvas#board');
@@ -123,7 +124,10 @@
                 createCreature(Genetix.Organisms.Minion);
             }
 
-            createGenePool();
+            if(!hasBeenStarted) {
+                createGenePool();
+            }
+            hasBeenStarted = true;
         }
     </script>
 
