@@ -1,5 +1,3 @@
-var fullCircle = Math.PI * 2;
-
 /**
  * The base class for organisms
  * @param {Number} x The position in the X axis
@@ -37,7 +35,8 @@ Genetix.Organisms.OrganismBase = function (x, y) {
     this.orientation = 0;
 
     /**
-     *
+     * Speed determines the velocity of a minion as well as the rate at which energy is consumed when executing certain behaviours.
+     * Minions with a high speed value reach their targets faster, but generally have a shorter life span due to a higher energy consumption rate.
      * @type {number}
      */
     this.speed = 1;
@@ -115,6 +114,15 @@ Genetix.Organisms.OrganismBase = function (x, y) {
     this.strength = 10;
 
     /**
+     * Stamina is the lifeblood of minions, as it determines how much energy a minion has.
+     * Every time a behaviour is executed, for example attacking, a little bit of energy is consumed (the rate of which
+     * relates to the minion’s speed). When all the energy is consumed, health will be consumed instead and eventually the minion will die.
+     * Stamina also determines how long a minion will persist in a behaviour; for example for how long it will flee from or pursue an enemy.
+     * @type {number}
+     */
+    this.stamina = 10;
+
+    /**
      * Persistence, which derives from a minion’s stamina, determines how long it will intimidate, pursue or flee from an enemy.
      * For example, a minion with 40 stamina will intimidate, pursue or flee for 3–4 seconds.
      * A minion with 60 stamina will perform for 5–6 seconds.
@@ -131,7 +139,7 @@ Genetix.Organisms.OrganismBase = function (x, y) {
      * @TODO base this on size?
      * @type {number}
      */
-    this.turnSpeed = fullCircle / 100;
+    this.turnSpeed = Genetix.Constants.circle / 100;
 };
 
 /**
@@ -151,17 +159,6 @@ Genetix.Organisms.OrganismBase.prototype.draw = function () {
     ctx.lineWidth = 1;
 
     // this method should be overridden and called in the implementing class
-    // e.g.
-
-    //Genetix.Organisms.OrganismBase.prototype.draw.call();
-    //ctx.beginPath();
-    //ctx.moveTo(0, 0);
-    //ctx.lineTo(this.width, this.height*.5);
-    //ctx.lineTo(0, this.height);
-    //ctx.lineTo(this.width*.1, this.height*.5);
-    //ctx.closePath();
-    //ctx.stroke();
-    //ctx.restore();
 };
 
 Genetix.Organisms.OrganismBase.prototype.assignNewTarget = function (newTarget) {
@@ -172,88 +169,18 @@ Genetix.Organisms.OrganismBase.prototype.assignNewTarget = function (newTarget) 
  * Updates the Organism - should be called on each tick of the game engine
  * @param {Number} elapsed
  */
-Genetix.Organisms.OrganismBase.prototype.update = function (elapsed) {
-    this.lifeTimer += elapsed;
-    console.log('elapsed: '+elapsed+', lifeTime: '+this.lifeTimer);
-    var timeToDie = this.maxSpeed/this.totalHealth;
-
-    this.health = Math.max(1 - (this.lifeTimer * timeToDie), 0);
-
+Genetix.Organisms.OrganismBase.prototype.update = function () {
     if (this.health === 0) {
         this.dead = true;
         return;
     }
 
-    this.speed = Math.min (this.maxSpeed - (this.lifeTimer * timeToDie), this.maxSpeed);
-
-    if (this.target && !this.target.wasEaten) {
-        var y = this.target.position.y - this.position.y;
-        var x = this.target.position.x - this.position.x;
-        var d2 = Math.pow(x, 2) + Math.pow(y, 2);
-
-
-        if (d2 < 16) {
-            this.lifeTimer -= this.target.foodValue;
-            this.target.nibble();
-            this.assignNewTarget();
-
-        } else {
-
-            var angle = Math.atan2(y, x);
-            var delta = angle - this.orientation;
-            var delta_abs = Math.abs(delta);
-
-            if (delta_abs > Math.PI) {
-                delta = delta_abs - fullCircle;
-            }
-
-            if (delta !== 0) {
-                var direction = delta / delta_abs;
-                this.orientation += (direction * Math.min(this.turnSpeed, delta_abs));
-            }
-            this.orientation %= fullCircle;
-
-            this.position.x += Math.cos(this.orientation) * this.speed;
-            this.position.y += Math.sin(this.orientation) * this.speed;
-        }
-
-    }
-    else {
-        var foodEntities = Genetix.Core.Engine.objects().slice(0);
-        // Find something to do
-        if (foodEntities.filter( function (e) { return !e.wasEaten; } ).length > 0) {
-            // If hawk doesnt have any target then we have to look for the closest target and assign it
-            var distances = [];
-
-            // Go through all the food entities and see which one is the closest to the hawkl
-            for (var foodIndex = 0; foodIndex < foodEntities.length; foodIndex++) {
-
-                var food = foodEntities[foodIndex];
-
-                if (!food.wasEaten) {
-                    distances.push([Math.pow(food.position.x - this.position.x, 2) + Math.pow(food.position.y - this.position.y, 2), foodIndex]);
-                }
-            }
-
-            // this sorts distances in growing order
-            distances.sort(function (a, b) {
-                return a[0] - b[0];
-            });
-
-            // assign the closest target (which is the first in the sorted array)
-            if (distances[1]) {
-                this.assignNewTarget(foodEntities[distances[1][1]]);
-            }
-        }
-    }
-
-    if (this.health <= 0) {
-        this.dead = true;
-    }
-
     this.draw();
 };
 
+/**
+ * Turns and moves the organism towards it's current target
+ */
 Genetix.Organisms.OrganismBase.prototype.headTowardsTarget = function() {
     var proximity = Genetix.Utils.MathUtil.getProximity(this.target, this);
     var angle = Math.atan2(proximity.y, proximity.x);
@@ -261,27 +188,15 @@ Genetix.Organisms.OrganismBase.prototype.headTowardsTarget = function() {
     var delta_abs = Math.abs(delta);
 
     if (delta_abs > Math.PI) {
-        delta = delta_abs - fullCircle;
+        delta = delta_abs - Genetix.Constants.circle;
     }
 
     if (delta !== 0) {
         var direction = delta / delta_abs;
         this.orientation += (direction * Math.min(this.turnSpeed, delta_abs));
     }
-    this.orientation %= fullCircle;
+    this.orientation %= Genetix.Constants.circle;
 
     this.position.x += Math.cos(this.orientation) * this.speed;
     this.position.y += Math.sin(this.orientation) * this.speed;
 };
-
-/**
- * Returns true if the organism is dead
- * @returns {boolean}
- */
-Genetix.Organisms.OrganismBase.prototype.isDead = function () { return this.dead; };
-
-/**
- * Returns true if the organism has an uneaten target
- * @returns {boolean}
- */
-Genetix.Organisms.OrganismBase.prototype.hasTarget = function () { return !(this.target === null || this.target.wasEaten()); };

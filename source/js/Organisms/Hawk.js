@@ -12,7 +12,7 @@ Genetix.Organisms.Hawk = function(x, y) {
     this.type = 'Hawk';
 
     this.speed = this.maxSpeed = 1.5;
-    this.turnSpeed = fullCircle / 100;
+    this.turnSpeed = Genetix.Constants.circle / 100;
     this.width = 10;
     this.height = 6;
     this.totalHealth = 40000;

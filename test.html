@@ -2,8 +2,6 @@
 <html>
 <head>
 <title>Hawk Test</title>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-
 <script type="text/javascript" src="build/js/Genetix.js"></script>
 
 <style type="text/css">
@@ -85,7 +83,7 @@
         canvas.setAttribute('height', canvasHeight);
 
         function createCreature(baseClass) {
-            var angle = Math.random() * fullCircle;
+            var angle = Math.random() * Genetix.Constants.circle;
             var radius = Math.max(canvasWidth, canvasHeight) * 0.5;
             var x = Math.cos(angle) * radius + canvasWidth * 0.5;
             var y = Math.sin(angle) * radius + canvasHeight * 0.5;

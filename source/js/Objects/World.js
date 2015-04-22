@@ -6,7 +6,7 @@ Genetix.Objects.World = (function() {
          * @param {Genetix.Organisms.OrganismBase} baseClass
          */
         spawnOrganism: function(baseClass) {
-            var angle = Math.random() * fullCircle;
+            var angle = Math.random() * Genetix.Constants.circle;
             var radius = Math.max(canvasWidth, canvasHeight) * 0.5;
             var x = Math.cos(angle) * radius + canvasWidth * 0.5;
             var y = Math.sin(angle) * radius + canvasHeight * 0.5;

@@ -102,12 +102,16 @@ Genetix.Core.Engine = (function() {
      * @see Genetix.vehicles.Vehicle.update
      * @private
      */
-    var _updateOrganisms = function(elapsed) {
+    var _updateOrganisms = function() {
         var organism;
         for (var i = _organisms.length -1; i >= 0; i--) {
             organism = _organisms[i];
 
-            organism.update(elapsed);
+            organism.update();
+
+            if(organism.dead) {
+                _organisms.splice(i, 1);
+            }
         }
         organism = null;
     };
