@@ -51,12 +51,6 @@ Genetix.Organisms.Minion.prototype.draw = function() {
  * @param {Number} elapsed
  */
 Genetix.Organisms.Minion.prototype.update = function (elapsed) {
-    //this.lifeTimer += elapsed;
-    //console.log('elapsed: '+elapsed+', lifeTime: '+this.lifeTimer);
-    //var timeToDie = this.maxSpeed/this.totalHealth;
-
-    //this.health = Math.max(1 - (this.lifeTimer * timeToDie), 0);
-
     if (this.health === 0) {
         this.dead = true;
         return;
@@ -66,57 +60,15 @@ Genetix.Organisms.Minion.prototype.update = function (elapsed) {
     this.speed = this.maxSpeed;
 
     if (this.target) {
-        var proximity = Genetix.Utils.MathUtil.getProximity(this.target, this);
         if (this.target.type === 'gene') {
-            if(this.target.minion || this.target.genePool) {
-                this.assignNewTarget(null);
-                return;
-            }
-            if (proximity.d2 < 16) {
-                //this.lifeTimer -= this.target.foodValue;
-                this.target.grab(this);
-                this.genes.push(this.target);
-                this.assignNewTarget(null);
-            } else {
-                this.headTowardsTarget();
-            }
+            this.headTowardsTargetGene();
         } else if(this.target.type === 'genePool') {
-            if (proximity.d2 < 40) {
-                var pool = this.target;
-                this.genes.forEach(function(gene) {
-                    gene.drop(pool);
-                });
-                this.genes.length = 0;
-                this.assignNewTarget(null);
-            } else {
-                this.headTowardsTarget();
-            }
+            this.headTowardsTargetGenePool();
         }
     } else if(this.genes.length < 5) {
-        // start looking for another gene
-        var genes = Genetix.Core.Engine.genes.filter( function (g) { return !g.minion && !g.genePool; } );
-
-        // If minion doesnt have any target then we have to look for the closest target and assign it
-        var closestGene = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, genes);
-        if(closestGene) {
-            this.assignNewTarget(closestGene);
-        } else if(this.genes.length > 0) {
-            // take the genes to a gene pool
-            var closestPool = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, Genetix.Core.Engine.genePools);
-            if(closestPool) {
-                this.assignNewTarget(closestPool);
-            } else {
-
-            }
-        }
+        this.findNewTarget();
     } else {
-        // take the genes to a gene pool
-        var closestPool = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, Genetix.Core.Engine.genePools);
-        if(closestPool) {
-            this.assignNewTarget(closestPool);
-        } else {
-
-        }
+        this.setTargetToNearestGenePool();
     }
 
     if (this.health <= 0) {
@@ -127,6 +79,77 @@ Genetix.Organisms.Minion.prototype.update = function (elapsed) {
     this.draw();
 };
 
+/**
+ * Heads the Minion towards the currently targeted Gene
+ */
+Genetix.Organisms.Minion.prototype.headTowardsTargetGene = function() {
+    var proximity = Genetix.Utils.MathUtil.getProximity(this.target, this);
+
+    if(this.target.minion || this.target.genePool) {
+        this.assignNewTarget(null);
+        return;
+    }
+    if (proximity.d2 < 16) {
+        //this.lifeTimer -= this.target.foodValue;
+        this.target.grab(this);
+        this.genes.push(this.target);
+        this.assignNewTarget(null);
+    } else {
+        this.headTowardsTarget();
+    }
+};
+
+/**
+ * Heads the Minion towards the currently targeted Gene Pool
+ */
+Genetix.Organisms.Minion.prototype.headTowardsTargetGenePool = function() {
+    var proximity = Genetix.Utils.MathUtil.getProximity(this.target, this);
+
+    if (proximity.d2 < 40) {
+        var pool = this.target;
+        this.genes.forEach(function(gene) {
+            gene.drop(pool);
+        });
+        this.genes.length = 0;
+        this.assignNewTarget(null);
+    } else {
+        this.headTowardsTarget();
+    }
+};
+
+/**
+ * Selects the nearest gene as the current target if there is one.
+ * If not, tries to select the nearest Gene Pool.
+ */
+Genetix.Organisms.Minion.prototype.findNewTarget = function() {
+    // start looking for another gene
+    var genes = Genetix.Core.Engine.genes.filter( function (g) { return !g.minion && !g.genePool; } );
+
+    // If minion doesnt have any target then we have to look for the closest target and assign it
+    var closestGene = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, genes);
+    if(closestGene) {
+        this.assignNewTarget(closestGene);
+    } else if(this.genes.length > 0) {
+        this.setTargetToNearestGenePool();
+    }
+};
+
+/**
+ * Finds the nearest GenePool and assigns it as the current target
+ */
+Genetix.Organisms.Minion.prototype.setTargetToNearestGenePool = function() {
+    // take the genes to a gene pool
+    var closestPool = Genetix.Utils.MathUtil.getClosest(this.position.x, this.position.y, Genetix.Core.Engine.genePools);
+    if(closestPool) {
+        this.assignNewTarget(closestPool);
+    } else {
+
+    }
+};
+
+/**
+ * @override Genetix.Organisms.OrganismBase.prototype.headTowardsTarget
+ */
 Genetix.Organisms.Minion.prototype.headTowardsTarget = function() {
     var currentOrientation = this.orientation;
 
